@@ -4,12 +4,12 @@
     "scripts": ["background.js"]
   },
   "manifest_version": 2,
-  "name": "block-exe",
-  "version": "1.0.0",
+  "name": "block-suspicious-downloads",
+  "version": "1.0.1",
   "homepage_url": "https://github.com/igorlogius/custom-clipboard-shortcuts",
-  "description": "set custom clipboard shortcuts to use",
+  "description": "",
   "icons": {
-	  "512": "icon.png"
+    "512": "icon.png"
   },
   "browser_action": {},
   "permissions": ["downloads", "storage", "notifications"]
