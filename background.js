@@ -1,7 +1,9 @@
 /* global browser */
 
+const manifest = browser.runtime.getManifest();
+const extname = manifest.name;
+
 let enabled = true;
-//const regex = /\.(exe|wmi|dll|sfx|sea)/gim;
 
 function getSuspiciousSubstrings(str) {
   str = str.toLowerCase();
@@ -47,9 +49,12 @@ function getSuspiciousSubstrings(str) {
 }
 
 browser.downloads.onCreated.addListener(async (item) => {
+	if(!enabled){
+		return;
+	}
   const matches = getSuspiciousSubstrings(item.filename);
 
-  if (matches.length) {
+  if (matches.length > 0) {
     try {
       // first we try to cancel the download
       await browser.downloads.cancel(item.id);
@@ -57,8 +62,12 @@ browser.downloads.onCreated.addListener(async (item) => {
       browser.notifications.create("" + Date.now(), {
         type: "basic",
         iconUrl: browser.runtime.getURL("warn.png"),
-        title: "Download Canceled",
-        message: "filename seemed suspicious [" + matches.join(",") + "]",
+        title: extname,
+        message:
+          "Canceled a suspicious download!" +
+          "\r\nReason for suspicion: Filename contained [" +
+          matches.join(",") +
+          "]",
       });
     } catch (e) {
       console.error(e);
@@ -70,13 +79,27 @@ browser.downloads.onCreated.addListener(async (item) => {
           priority: 2,
           type: "basic",
           iconUrl: browser.runtime.getURL("warn.png"),
-          title: "Download Removed",
-          message: "filename seemed suspicious [" + matches.join(",") + "]",
+          title: extname,
+          message:
+            "Removed a suspicious downloaded file!" +
+            "\r\nReason for suspicion: Filename contained [" +
+            matches.join(",") +
+            "]",
         });
       } catch (e) {
         console.error(e);
         // now if that did not work ... lets at least try and warn the user with a notification
-        // todo noop for now
+        browser.notifications.create("" + Date.now(), {
+          priority: 2,
+          type: "basic",
+          iconUrl: browser.runtime.getURL("warn.png"),
+          title: extname,
+          message:
+            "Failed to cancel and remove a suspicious downloaded file!" +
+            "\r\nReason for suspicion: Filename contained [" +
+            matches.join(",") +
+            "]",
+        });
       }
     }
   }

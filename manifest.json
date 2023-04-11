@@ -4,9 +4,9 @@
     "scripts": ["background.js"]
   },
   "manifest_version": 2,
-  "name": "block-suspicious-downloads",
-  "version": "1.0.1",
-  "homepage_url": "https://github.com/igorlogius/custom-clipboard-shortcuts",
+  "name": "Block Suspicious Downloads",
+  "version": "1.0.2",
+  "homepage_url": "https://github.com/igorlogius/block-suspicious-downloads",
   "description": "",
   "icons": {
     "512": "icon.png"
