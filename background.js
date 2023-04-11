@@ -49,9 +49,9 @@ function getSuspiciousSubstrings(str) {
 }
 
 browser.downloads.onCreated.addListener(async (item) => {
-	if(!enabled){
-		return;
-	}
+  if (!enabled) {
+    return;
+  }
   const matches = getSuspiciousSubstrings(item.filename);
 
   if (matches.length > 0) {
@@ -92,7 +92,7 @@ browser.downloads.onCreated.addListener(async (item) => {
         browser.notifications.create("" + Date.now(), {
           priority: 2,
           type: "basic",
-          iconUrl: browser.runtime.getURL("warn.png"),
+          iconUrl: browser.runtime.getURL("error.png"),
           title: extname,
           message:
             "Failed to cancel and remove a suspicious downloaded file!" +
